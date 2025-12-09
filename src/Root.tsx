@@ -1,8 +1,8 @@
 import { HashRouter } from 'react-router-dom';
 import { useRoutes } from 'react-router-dom';
-import { Routes } from './app/routes';
+import { Router } from './app/routes';
 
-const AppRoutes = () => useRoutes(Routes);
+const AppRoutes = () => useRoutes(Router);
 
 export const Root = () => (
   <HashRouter>

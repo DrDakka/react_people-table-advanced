@@ -1,18 +1,47 @@
-export const PeopleFilters = () => {
+import { Sex } from '@pages/peoplePage/types';
+
+enum Centuries {
+  SXTN = '16',
+  SVNTN = '17',
+  EIGHTN = '18',
+  NNTN = '19',
+  TWT = '20',
+  ALL = 'all',
+}
+
+enum Sort {
+  NAME = 'name',
+  SEX = 'sex',
+  BORN = 'born',
+  DIED = 'died',
+  NONE = 'none',
+}
+
+type Props = {
+  filters: {
+    setQuery: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    setCentury: (century: Centuries) => void;
+    setSex: (sex: Sex) => void;
+    setSort: (sort: Sort) => void;
+    setReverse: () => void;
+    resetFilters: () => void;
+  };
+};
+export const PeopleFilters = ({ filters }: Props) => {
   return (
     <nav className="panel">
       <p className="panel-heading">Filters</p>
 
       <p className="panel-tabs" data-cy="SexFilter">
-        <a className="is-active" href="#/people">
-          All
-        </a>
-        <a className="" href="#/people?sex=m">
-          Male
-        </a>
-        <a className="" href="#/people?sex=f">
-          Female
-        </a>
+        {Object.values(Sex).map(el => (
+          <button
+            key={el}
+            className="is-active"
+            onClick={() => filters.setSex(el)}
+          >
+            {el}
+          </button>
+        ))}
       </p>
 
       <div className="panel-block">

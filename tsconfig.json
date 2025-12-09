@@ -1,6 +1,7 @@
 {
   "extends": "@mate-academy/students-ts-config",
   "include": [
+    "cypress.config.ts",
     "src"
   ],
   "compilerOptions": {
@@ -10,6 +11,9 @@
     "paths": {
       "@app/*":       ["src/app/*"],
       "@pages/*":     ["src/pages/*"],
+      "@widgets/*":     ["src/widgets/*"],
+      "@entities/*":     ["src/entities/*"],
+      "@shared/*":     ["src/shared/*"],
     }
   }
 }
