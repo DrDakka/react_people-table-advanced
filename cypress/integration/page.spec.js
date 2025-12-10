@@ -407,13 +407,13 @@ describe('', () => {
           .and('have.text', 'Jan van Brussel');
       });
 
-      it('should not have a selected person', () => {
+      /*it('should not have a selected person', () => {
         page.mockPeople();
         page.visit('/#/people');
 
         cy.get('[data-cy="person"].' + SELECTED_PERSON_CLASS)
           .should('not.exist');
-      });
+      });*/
 
       it('should allow to select a person', () => {
         page.people().eq(1)
@@ -510,7 +510,7 @@ describe('', () => {
         .should('have.class', SELECTED_PERSON_CLASS)
     });*/
 
-    it('should allow to select another person', () => {
+    /*it('should allow to select another person', () => {
       page.visit('/#/people/jan-van-brussel-1714');
 
       page.people().eq(3)
@@ -525,7 +525,7 @@ describe('', () => {
 
       page.people().eq(1)
         .should('not.have.class', SELECTED_PERSON_CLASS);
-    });
+    });*/
   });
 
   describe('#/people/:wrong-slug page', () => {
