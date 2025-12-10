@@ -23,7 +23,10 @@ export const PeopleTable = ({ people }: Props) => {
         <tr>
           {renderList.map(el => (
             <th key={el}>
-              <span className="is-flex is-flex-wrap-nowrap">
+              <span
+                className="is-flex is-flex-wrap-nowrap"
+                style={{ textTransform: 'capitalize' }}
+              >
                 {el}
                 <Link
                   to={`?sort=${el.toLowerCase()}`}

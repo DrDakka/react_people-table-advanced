@@ -1,12 +1,10 @@
 import { usePeopleContext } from '@pages/peoplePage/model';
 import { Centuries, Sex } from '@pages/peoplePage/types';
 import classNames from 'classnames';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export const PeopleFilters = () => {
   const { state, parametersAction } = usePeopleContext();
-  const [qry, setQry] = useState<string>('');
   const btnReg = {
     sex: [Sex.MALE, Sex.FEMALE],
     cent: [
@@ -58,10 +56,9 @@ export const PeopleFilters = () => {
             data-cy="NameFilter"
             type="search"
             className="input"
-            value={qry}
+            value={state.query}
             placeholder="Search"
             onChange={e => {
-              setQry(e.target.value);
               parametersAction.setQuery(e);
             }}
           />
@@ -114,10 +111,7 @@ export const PeopleFilters = () => {
       <div className="panel-block">
         <button
           className="button is-link is-outlined is-fullwidth"
-          onClick={() => {
-            setQry('');
-            parametersAction.resetAll();
-          }}
+          onClick={() => parametersAction.resetAll()}
         >
           Reset all filters
         </button>

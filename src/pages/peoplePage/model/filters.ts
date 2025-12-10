@@ -57,7 +57,7 @@ const filterBySex: FilterTypes[SearchKeys.SEX] = (sex, arr) => {
     return arr;
   }
 
-  return arr.filter(el => el.sex === sex[0].toLowerCase());
+  return arr.filter(el => el.sex === (sex === 'male' ? 'm' : 'f'));
 };
 
 const filterSort: FilterTypes[SearchKeys.SORT] = (sort, reverse, arr) => {
