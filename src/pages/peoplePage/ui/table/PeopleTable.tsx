@@ -1,4 +1,7 @@
 import { Person, PersonWidget } from '@entities/person';
+import { usePeopleContext } from '@pages/peoplePage/model';
+import { Sort } from '@pages/peoplePage/types';
+import classNames from 'classnames';
 import { Link, useLocation } from 'react-router-dom';
 
 /* eslint-disable jsx-a11y/control-has-associated-label */
@@ -8,6 +11,8 @@ type Props = {
 
 export const PeopleTable = ({ people }: Props) => {
   const location = useLocation();
+  const { state, parametersAction } = usePeopleContext();
+  const renderList = [Sort.NAME, Sort.SEX, Sort.BORN, Sort.DIED];
 
   return (
     <table
@@ -16,49 +21,52 @@ export const PeopleTable = ({ people }: Props) => {
     >
       <thead>
         <tr>
-          <th>
-            <span className="is-flex is-flex-wrap-nowrap">
-              Name
-              <Link to="/people?sort=name">
-                <span className="icon">
-                  <i className="fas fa-sort" />
-                </span>
-              </Link>
-            </span>
-          </th>
+          {renderList.map(el => (
+            <th key={el}>
+              <span className="is-flex is-flex-wrap-nowrap">
+                {el}
+                <Link
+                  to={`?sort=${el.toLowerCase()}`}
+                  onClick={e => {
+                    e.preventDefault();
+                    if (state.sort !== el) {
+                      parametersAction.setSort(el);
 
-          <th>
-            <span className="is-flex is-flex-wrap-nowrap">
-              Sex
-              <Link to="/people?sort=sex">
-                <span className="icon">
-                  <i className="fas fa-sort" />
-                </span>
-              </Link>
-            </span>
-          </th>
+                      return;
+                    }
 
-          <th>
-            <span className="is-flex is-flex-wrap-nowrap">
-              Born
-              <Link to="/people?sort=born">
-                <span className="icon">
-                  <i className="fas fa-sort-up" />
-                </span>
-              </Link>
-            </span>
-          </th>
+                    if (state.order !== 'desc') {
+                      parametersAction.setReverse();
 
-          <th>
-            <span className="is-flex is-flex-wrap-nowrap">
-              Died
-              <Link to="/people?sort=died">
-                <span className="icon">
-                  <i className="fas fa-sort" />
-                </span>
-              </Link>
-            </span>
-          </th>
+                      return;
+                    } else {
+                      parametersAction.rmReverse();
+
+                      return;
+                    }
+                  }}
+                >
+                  <span className="icon">
+                    <i
+                      className={classNames(
+                        'fas',
+                        {
+                          'fa-sort': state.sort !== el,
+                        },
+                        {
+                          'fa-sort-up': state.sort === el && state.order === '',
+                        },
+                        {
+                          'fa-sort-down':
+                            state.sort === el && state.order === 'desc',
+                        },
+                      )}
+                    />
+                  </span>
+                </Link>
+              </span>
+            </th>
+          ))}
 
           <th>Mother</th>
           <th>Father</th>

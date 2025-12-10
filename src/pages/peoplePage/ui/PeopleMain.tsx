@@ -1,12 +1,12 @@
 import { PeopleFilters } from './filters/PeopleFilters';
 import { PeopleTable } from './table/PeopleTable';
-import { usePeoplePage } from '../model';
 import { LoadingState } from '../types';
 import { Person } from '@entities/person';
 import { Loader } from '@shared/ui';
+import { usePeopleContext } from '../model';
 
-export const PeoplePage = () => {
-  const { visiblePeople, filters } = usePeoplePage();
+export const PeopleMain = () => {
+  const { apiPeople, renderList } = usePeopleContext();
 
   const childrenMapper = {
     [LoadingState.LOADING]: <Loader />,
@@ -28,15 +28,17 @@ export const PeoplePage = () => {
       <div className="block">
         <div className="columns is-desktop is-flex-direction-row-reverse">
           <div className="column is-7-tablet is-narrow-desktop">
-            <PeopleFilters filters={filters} />
+            <PeopleFilters />
           </div>
 
           <div className="column">
             <div className="box table-container">
-              {Object.values(LoadingState).some(el => el === visiblePeople) ? (
-                childrenMapper[visiblePeople as LoadingState]
+              {Object.values(LoadingState).some(el => el === apiPeople) ? (
+                childrenMapper[apiPeople as LoadingState]
+              ) : renderList === LoadingState.NO_MATCH ? (
+                childrenMapper[LoadingState.NO_MATCH]
               ) : (
-                <PeopleTable people={visiblePeople as Person[]} />
+                <PeopleTable people={renderList as Person[]} />
               )}
             </div>
           </div>

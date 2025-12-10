@@ -1,2 +1,2 @@
-export { LoadingState } from './loadingStates.enum';
-export * from './filters.enum';
+export { LoadingState } from './loading.enum';
+export * from './urlReducer.enums';

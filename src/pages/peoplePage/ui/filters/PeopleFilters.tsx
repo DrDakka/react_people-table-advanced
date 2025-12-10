@@ -1,46 +1,54 @@
-import { Sex } from '@pages/peoplePage/types';
+import { usePeopleContext } from '@pages/peoplePage/model';
+import { Centuries, Sex } from '@pages/peoplePage/types';
+import classNames from 'classnames';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-enum Centuries {
-  SXTN = '16',
-  SVNTN = '17',
-  EIGHTN = '18',
-  NNTN = '19',
-  TWT = '20',
-  ALL = 'all',
-}
-
-enum Sort {
-  NAME = 'name',
-  SEX = 'sex',
-  BORN = 'born',
-  DIED = 'died',
-  NONE = 'none',
-}
-
-type Props = {
-  filters: {
-    setQuery: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    setCentury: (century: Centuries) => void;
-    setSex: (sex: Sex) => void;
-    setSort: (sort: Sort) => void;
-    setReverse: () => void;
-    resetFilters: () => void;
+export const PeopleFilters = () => {
+  const { state, parametersAction } = usePeopleContext();
+  const [qry, setQry] = useState<string>('');
+  const btnReg = {
+    sex: [Sex.MALE, Sex.FEMALE],
+    cent: [
+      Centuries.SXTN,
+      Centuries.SVNTN,
+      Centuries.EIGHTN,
+      Centuries.NNTN,
+      Centuries.TWT,
+    ],
   };
-};
-export const PeopleFilters = ({ filters }: Props) => {
+
   return (
     <nav className="panel">
       <p className="panel-heading">Filters</p>
 
-      <p className="panel-tabs" data-cy="SexFilter">
-        {Object.values(Sex).map(el => (
-          <button
+      <p
+        className="panel-tabs"
+        data-cy="SexFilter"
+        style={{ textTransform: 'capitalize' }}
+      >
+        <Link
+          to={``}
+          className={classNames({ 'is-active': state.sex === '' })}
+          onClick={e => {
+            e.preventDefault();
+            parametersAction.setSex(Sex.ALL);
+          }}
+        >
+          {Sex.ALL}
+        </Link>
+        {btnReg.sex.map(el => (
+          <Link
             key={el}
-            className="is-active"
-            onClick={() => filters.setSex(el)}
+            to={`?sex=${el[0].toLowerCase()}`}
+            className={classNames({ 'is-active': state.sex === el })}
+            onClick={e => {
+              e.preventDefault();
+              parametersAction.setSex(el);
+            }}
           >
             {el}
-          </button>
+          </Link>
         ))}
       </p>
 
@@ -50,7 +58,12 @@ export const PeopleFilters = ({ filters }: Props) => {
             data-cy="NameFilter"
             type="search"
             className="input"
+            value={qry}
             placeholder="Search"
+            onChange={e => {
+              setQry(e.target.value);
+              parametersAction.setQuery(e);
+            }}
           />
 
           <span className="icon is-left">
@@ -62,63 +75,52 @@ export const PeopleFilters = ({ filters }: Props) => {
       <div className="panel-block">
         <div className="level is-flex-grow-1 is-mobile" data-cy="CenturyFilter">
           <div className="level-left">
-            <a
-              data-cy="century"
-              className="button mr-1"
-              href="#/people?centuries=16"
-            >
-              16
-            </a>
-
-            <a
-              data-cy="century"
-              className="button mr-1 is-info"
-              href="#/people?centuries=17"
-            >
-              17
-            </a>
-
-            <a
-              data-cy="century"
-              className="button mr-1 is-info"
-              href="#/people?centuries=18"
-            >
-              18
-            </a>
-
-            <a
-              data-cy="century"
-              className="button mr-1 is-info"
-              href="#/people?centuries=19"
-            >
-              19
-            </a>
-
-            <a
-              data-cy="century"
-              className="button mr-1"
-              href="#/people?centuries=20"
-            >
-              20
-            </a>
+            {btnReg.cent.map(el => (
+              <Link
+                key={el}
+                to={`?centuries=${el}`}
+                data-cy="century"
+                className={classNames('button mr-1', {
+                  'is-info': state.centuries.some(ct => ct === el),
+                })}
+                onClick={e => {
+                  e.preventDefault();
+                  parametersAction.setCentury(el);
+                }}
+              >
+                {el}
+              </Link>
+            ))}
           </div>
 
           <div className="level-right ml-4">
-            <a
+            <Link
+              to={''}
               data-cy="centuryALL"
-              className="button is-success is-outlined"
-              href="#/people"
+              className={classNames('button', 'is-outlined', 'is-success', {
+                'is-focused': state.centuries.length === 0,
+              })}
+              onClick={e => {
+                e.preventDefault();
+                parametersAction.setCentury(Centuries.ALL);
+              }}
             >
               All
-            </a>
+            </Link>
           </div>
         </div>
       </div>
 
       <div className="panel-block">
-        <a className="button is-link is-outlined is-fullwidth" href="#/people">
+        <button
+          className="button is-link is-outlined is-fullwidth"
+          onClick={() => {
+            setQry('');
+            parametersAction.resetAll();
+          }}
+        >
           Reset all filters
-        </a>
+        </button>
       </div>
     </nav>
   );
