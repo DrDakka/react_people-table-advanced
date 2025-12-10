@@ -14,32 +14,29 @@ const navLinks = [
 
 export const Header = () => {
   return (
-    <header>
-      <nav
-        data-cy="nav"
-        className="navbar is-fixed-top has-shadow"
-        role="navigation"
-        aria-label="main navigation"
-      >
-        <div className="container">
-          <ul className="navbar-brand">
-            {navLinks.map(el => (
-              <li key={el.to} style={{ display: 'flex' }}>
-                <NavLink
-                  to={el.to}
-                  className={({ isActive }) =>
-                    classNames('navbar-item', {
-                      ['has-background-grey-lighter']: isActive,
-                    })
-                  }
-                >
-                  {el.name}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
+    <nav
+      data-cy="nav"
+      className="navbar is-fixed-top has-shadow"
+      role="navigation"
+      aria-label="main navigation"
+    >
+      <div className="container">
+        <div className="navbar-brand">
+          {navLinks.map(el => (
+            <NavLink
+              to={el.to}
+              key={el.to}
+              className={({ isActive }) =>
+                classNames('navbar-item', {
+                  ['has-background-grey-lighter']: isActive,
+                })
+              }
+            >
+              {el.name}
+            </NavLink>
+          ))}
         </div>
-      </nav>
-    </header>
+      </div>
+    </nav>
   );
 };
