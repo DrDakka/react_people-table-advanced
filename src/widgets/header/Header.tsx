@@ -1,18 +1,21 @@
 import classNames from 'classnames';
-import { NavLink } from 'react-router-dom';
-
-const navLinks = [
-  {
-    to: `/`,
-    name: 'Home',
-  },
-  {
-    to: `/people`,
-    name: 'People',
-  },
-];
+import { NavLink, useLocation } from 'react-router-dom';
 
 export const Header = () => {
+  const location = useLocation();
+  const suffix = location.search;
+
+  const navLinks = [
+    {
+      to: `/`,
+      name: 'Home',
+    },
+    {
+      to: `/people${suffix}`,
+      name: 'People',
+    },
+  ];
+
   return (
     <nav
       data-cy="nav"

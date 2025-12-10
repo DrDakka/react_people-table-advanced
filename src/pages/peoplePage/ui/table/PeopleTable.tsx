@@ -41,6 +41,14 @@ export const PeopleTable = ({ people }: Props) => {
                     e.preventDefault();
                     if (state.sort !== el) {
                       parametersAction.setSort(el);
+                      parametersAction.rmReverse();
+
+                      return;
+                    }
+
+                    if (state.sort === el && state.order === 'desc') {
+                      parametersAction.setSort(Sort.NONE);
+                      parametersAction.rmReverse();
 
                       return;
                     }
