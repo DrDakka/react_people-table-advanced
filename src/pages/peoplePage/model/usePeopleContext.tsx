@@ -47,6 +47,8 @@ const PeopleProvider = ({ children }: { children: ReactNode }) => {
 
       if (peopleApi.length === 0) {
         setAPIpeople(LoadingState.NO_PEOPLE);
+
+        return;
       }
 
       const processed = formPersonList(peopleApi);

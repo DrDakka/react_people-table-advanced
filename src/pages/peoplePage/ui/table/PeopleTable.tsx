@@ -14,6 +14,13 @@ export const PeopleTable = ({ people }: Props) => {
   const { state, parametersAction } = usePeopleContext();
   const renderList = [Sort.NAME, Sort.SEX, Sort.BORN, Sort.DIED];
 
+  const uiMap: Record<Exclude<Sort, Sort.NONE>, string> = {
+    [Sort.NAME]: 'Name',
+    [Sort.SEX]: 'Sex',
+    [Sort.BORN]: 'Born',
+    [Sort.DIED]: 'Died',
+  };
+
   return (
     <table
       data-cy="peopleTable"
@@ -27,7 +34,7 @@ export const PeopleTable = ({ people }: Props) => {
                 className="is-flex is-flex-wrap-nowrap"
                 style={{ textTransform: 'capitalize' }}
               >
-                {el}
+                {uiMap[el as Exclude<Sort, Sort.NONE>]}
                 <Link
                   to={`?sort=${el.toLowerCase()}`}
                   onClick={e => {
